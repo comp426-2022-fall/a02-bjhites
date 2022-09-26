@@ -14,12 +14,13 @@ if (args.h) {
 let d = args.d;
 let latitude;
 let longitude; 
-console.log(args);
+
 if(args.n && !args.s){
 	latitude = args.n;
 } else if(args.s && !args.n){
 	latitude = -1 * args.s;
 } else {
+	console.log("Must use -n or -s to speciy the latitude, -h for help");
 	process.exit(1);
 }
 
@@ -28,10 +29,11 @@ if(args.e && !args.w){
 } else if(args.w && !args.e){
 	longitude = -1 * args.w;
 } else {
+	console.log("Must use -e or -w to speciy the longitude, -h for help");
 	process.exit(1);
 }
 
-let timezone = args.t; 
+let timezone = args.z; 
 if(timezone == null){
 	timezone = moment.tz.guess();
 }
@@ -47,25 +49,24 @@ if(args.j){
 }
 if(d == 0){
 	if(data.daily.precipitation_sum[0] > 0){
-		console.log("You might need your galoshes ");
+		console.log("You might need your galoshes today.");
 	} else {
-		console.log("You will not need your galoshes ");
+		console.log("You will not need your galoshes today.");
 	}
-	console.log("today.\n");
 } else if (d > 1){
 	if(data.daily.precipitation_sum[d] > 0){
-		console.log("You might need your galoshes ");
-	} else {
-		console.log("You will not need your galoshes ");
+		console.log("You might need your galoshes in " + d + " days.\n");
+	} else if(d > 6){
+		console.log("Can only forecast weather for 7 days, try -h for help");
+		process.exit(1);
+	}else {
+		console.log("You will not need your galoshes in " + d + " days.\n");
 	}
-	console.log("today.\n");
-	console.log("in " + d + " days.\n");
 } else {
 	if(data.daily.precipitation_sum[1] > 0){
-		console.log("You might need your galoshes ");
+		console.log("You might need your galoshes tomorrow.");
 	} else {
-		console.log("You will not need your galoshes ");
+		console.log("You will not need your galoshes tomorrow");
 	}
-	console.log("tomorrow.\n")
 }
 process.exit(0);
