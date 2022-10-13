@@ -19,12 +19,16 @@ if(args.n && !args.s){
 	latitude = args.n;
 } else if(args.s && !args.n){
 	latitude = -1 * args.s;
-} 
+} else {
+	latitude = 10000;
+}
 
 if(args.e && !args.w){
 	longitude = args.e;
 } else if(args.w && !args.e){
 	longitude = -1 * args.w;
+} else {
+	longitude = 10000;
 }
 
 let timezone = args.z; 
@@ -35,7 +39,12 @@ const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' 
 const data = await response.json();
 
 if(args.j){
+	if(data.error != null){
+		console.log(data.reason);
+	}
+	else {
 	console.log(data);
+	}
 	process.exit(0);
 }
 if(data.error == null){
