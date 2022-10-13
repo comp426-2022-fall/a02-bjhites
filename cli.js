@@ -19,18 +19,12 @@ if(args.n && !args.s){
 	latitude = args.n;
 } else if(args.s && !args.n){
 	latitude = -1 * args.s;
-} else {
-	console.log("Must use -n or -s to speciy the latitude, -h for help");
-	process.exit(1);
-}
+} 
 
 if(args.e && !args.w){
 	longitude = args.e;
 } else if(args.w && !args.e){
 	longitude = -1 * args.w;
-} else {
-	console.log("Must use -e or -w to speciy the longitude, -h for help");
-	process.exit(1);
 }
 
 let timezone = args.z; 
@@ -39,14 +33,12 @@ if(timezone == null){
 }
 const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + latitude + '&longitude=' + longitude + '&daily=precipitation_sum&timezone=' + timezone);
 const data = await response.json();
-if(data.error){
-	console.log(data.reason + "\n");
-	process.exit(1);
-}
 
 if(args.j){
 	console.log(data);
+	process.exit(0);
 }
+if(data.error == null){
 if(d == 0){
 	if(data.daily.precipitation_sum[0] > 0){
 		console.log("You might need your galoshes today.");
@@ -68,5 +60,6 @@ if(d == 0){
 	} else {
 		console.log("You will not need your galoshes tomorrow");
 	}
+}
 }
 process.exit(0);
